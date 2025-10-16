@@ -56,8 +56,8 @@ func (s *expenseServer) GetSummary(ctx context.Context, req *expensev1.SummaryRe
 }
 
 func main() {
-	grpcPort := flag.Int("grpc-port", 9090, "gRPC server port")
-	httpPort := flag.Int("http-port", 8080, "HTTP gateway port")
+	grpcPort := flag.Int("grpc-port", 8091, "gRPC server port")
+	httpPort := flag.Int("http-port", 8092, "HTTP gateway port")
 	flag.Parse()
 
 	s := &expenseServer{}
