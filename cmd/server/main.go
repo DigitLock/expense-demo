@@ -10,7 +10,9 @@ import (
 
 	expensev1 "github.com/digitlock/expense-demo/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
@@ -21,6 +23,17 @@ type expenseServer struct {
 }
 
 func (s *expenseServer) AddExpense(ctx context.Context, req *expensev1.AddExpenseRequest) (*expensev1.AddExpenseResponse, error) {
+	// Простая валидация
+	if req.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "name is required")
+	}
+	if req.Amount <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "amount must be greater than 0")
+	}
+	if req.Category == "" {
+		return nil, status.Error(codes.InvalidArgument, "category is required")
+	}
+
 	exp := expensev1.Expense{
 		Id:         fmt.Sprintf("%d", len(s.expenses)+1),
 		Name:       req.Name,
@@ -31,7 +44,11 @@ func (s *expenseServer) AddExpense(ctx context.Context, req *expensev1.AddExpens
 		CreatedAt:  "2025-10-16T12:00:00Z",
 	}
 	s.expenses = append(s.expenses, exp)
-	return &expensev1.AddExpenseResponse{Id: exp.Id, Status: "ok"}, nil
+
+	return &expensev1.AddExpenseResponse{
+		Id:     exp.Id,
+		Status: "ok",
+	}, nil
 }
 
 func (s *expenseServer) ListExpenses(ctx context.Context, req *expensev1.ListExpensesRequest) (*expensev1.ListExpensesResponse, error) {
@@ -43,7 +60,6 @@ func (s *expenseServer) ListExpenses(ctx context.Context, req *expensev1.ListExp
 }
 
 func (s *expenseServer) GetSummary(ctx context.Context, req *expensev1.SummaryRequest) (*expensev1.SummaryResponse, error) {
-	// Простейшая суммаризация
 	summary := make(map[string]float64)
 	for _, e := range s.expenses {
 		summary[e.Category] += e.Amount
