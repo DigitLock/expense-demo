@@ -35,7 +35,11 @@ func (s *expenseServer) AddExpense(ctx context.Context, req *expensev1.AddExpens
 }
 
 func (s *expenseServer) ListExpenses(ctx context.Context, req *expensev1.ListExpensesRequest) (*expensev1.ListExpensesResponse, error) {
-	return &expensev1.ListExpensesResponse{Expenses: s.expenses}, nil
+	var expenses []*expensev1.Expense
+	for i := range s.expenses {
+		expenses = append(expenses, &s.expenses[i])
+	}
+	return &expensev1.ListExpensesResponse{Expenses: expenses}, nil
 }
 
 func (s *expenseServer) GetSummary(ctx context.Context, req *expensev1.SummaryRequest) (*expensev1.SummaryResponse, error) {

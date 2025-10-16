@@ -4,10 +4,11 @@
 // - protoc             v6.32.1
 // source: expense.proto
 
-package expensev1
+package proto
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

@@ -6,7 +6,7 @@ Package expensev1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package expensev1
+package proto
 
 import (
 	"context"
