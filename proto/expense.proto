@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package expense.v1;
+
+option go_package = "github.com/digitlock/expense-demo/proto;expensev1";
+
+import "google/api/annotations.proto";
+
+service ExpenseService {
+  rpc AddExpense(AddExpenseRequest) returns (AddExpenseResponse) {
+    option (google.api.http) = {
+      post: "/v1/expenses"
+      body: "*"
+    };
+  }
+
+  rpc ListExpenses(ListExpensesRequest) returns (ListExpensesResponse) {
+    option (google.api.http) = {
+      get: "/v1/expenses"
+    };
+  }
+
+  rpc GetSummary(SummaryRequest) returns (SummaryResponse) {
+    option (google.api.http) = {
+      get: "/v1/summary"
+    };
+  }
+
+}
+
+message AddExpenseRequest {
+  string name = 1;         // req
+  double amount = 2;       // req
+  string category = 3;     // req
+  string note = 4;         // opt
+  string occurred_at = 5;  // opt
+}
+message AddExpenseResponse { string id = 1; string status = 2; }
+
+message ListExpensesRequest { int32 limit = 1; int32 offset = 2; }
+message Expense {
+  string id = 1;
+  string name = 2;
+  double amount = 3;
+  string category = 4;
+  string note = 5;
+  string occurred_at = 6;
+  string created_at = 7;
+}
+message ListExpensesResponse { repeated Expense expenses = 1; }
+
+message SummaryRequest { string from = 1; string to = 2; }
+message CategorySummary { string category = 1; double total = 2; }
+message SummaryResponse { repeated CategorySummary summaries = 1; }
