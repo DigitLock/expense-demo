@@ -60,14 +60,25 @@ func (s *expenseServer) ListExpenses(ctx context.Context, req *expensev1.ListExp
 }
 
 func (s *expenseServer) GetSummary(ctx context.Context, req *expensev1.SummaryRequest) (*expensev1.SummaryResponse, error) {
-	summary := make(map[string]float64)
+	summary := make(map[string]*expensev1.CategorySummary)
+
 	for _, e := range s.expenses {
-		summary[e.Category] += e.Amount
+		if _, ok := summary[e.Category]; !ok {
+			summary[e.Category] = &expensev1.CategorySummary{
+				Category: e.Category,
+				Items:    0,
+				Total:    0,
+			}
+		}
+		summary[e.Category].Items++
+		summary[e.Category].Total += e.Amount
 	}
+
 	var result []*expensev1.CategorySummary
-	for cat, total := range summary {
-		result = append(result, &expensev1.CategorySummary{Category: cat, Total: total})
+	for _, cat := range summary {
+		result = append(result, cat)
 	}
+
 	return &expensev1.SummaryResponse{Summaries: result}, nil
 }
 

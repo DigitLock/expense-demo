@@ -50,5 +50,5 @@ message Expense {
 message ListExpensesResponse { repeated Expense expenses = 1; }
 
 message SummaryRequest { string from = 1; string to = 2; }
-message CategorySummary { string category = 1; double total = 2; }
+message CategorySummary { string category = 1; int32 items = 2; double total = 3; }
 message SummaryResponse { repeated CategorySummary summaries = 1; }

@@ -394,7 +394,8 @@ func (x *SummaryRequest) GetTo() string {
 type CategorySummary struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Category      string                 `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
-	Total         float64                `protobuf:"fixed64,2,opt,name=total,proto3" json:"total,omitempty"`
+	Items         int32                  `protobuf:"varint,2,opt,name=items,proto3" json:"items,omitempty"`
+	Total         float64                `protobuf:"fixed64,3,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -434,6 +435,13 @@ func (x *CategorySummary) GetCategory() string {
 		return x.Category
 	}
 	return ""
+}
+
+func (x *CategorySummary) GetItems() int32 {
+	if x != nil {
+		return x.Items
+	}
+	return 0
 }
 
 func (x *CategorySummary) GetTotal() float64 {
@@ -520,10 +528,11 @@ const file_expense_proto_rawDesc = "" +
 	"\bexpenses\x18\x01 \x03(\v2\x13.expense.v1.ExpenseR\bexpenses\"4\n" +
 	"\x0eSummaryRequest\x12\x12\n" +
 	"\x04from\x18\x01 \x01(\tR\x04from\x12\x0e\n" +
-	"\x02to\x18\x02 \x01(\tR\x02to\"C\n" +
+	"\x02to\x18\x02 \x01(\tR\x02to\"Y\n" +
 	"\x0fCategorySummary\x12\x1a\n" +
 	"\bcategory\x18\x01 \x01(\tR\bcategory\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x01R\x05total\"L\n" +
+	"\x05items\x18\x02 \x01(\x05R\x05items\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x01R\x05total\"L\n" +
 	"\x0fSummaryResponse\x129\n" +
 	"\tsummaries\x18\x01 \x03(\v2\x1b.expense.v1.CategorySummaryR\tsummaries2\xbb\x02\n" +
 	"\x0eExpenseService\x12d\n" +

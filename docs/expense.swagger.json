@@ -193,6 +193,10 @@
         "category": {
           "type": "string"
         },
+        "items": {
+          "type": "integer",
+          "format": "int32"
+        },
         "total": {
           "type": "number",
           "format": "double"
